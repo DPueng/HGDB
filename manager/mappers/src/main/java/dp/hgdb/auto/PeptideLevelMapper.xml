@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dp.hgdb.auto.PeptideLevelMapper">
+  <resultMap id="BaseResultMap" type="dp.hgdb.auto.PeptideLevel">
+    <id column="Peptide_id" jdbcType="INTEGER" property="peptideId" />
+    <result column="Exp_id" jdbcType="INTEGER" property="expId" />
+    <result column="Protein_id" jdbcType="INTEGER" property="proteinId" />
+    <result column="Sequence" jdbcType="VARCHAR" property="sequence" />
+    <result column="Prob" jdbcType="VARCHAR" property="prob" />
+    <result column="Ion_score" jdbcType="VARCHAR" property="ionScore" />
+    <result column="Repeat1" jdbcType="DECIMAL" property="repeat1" />
+    <result column="Repeat2" jdbcType="DECIMAL" property="repeat2" />
+    <result column="Repeat3" jdbcType="DECIMAL" property="repeat3" />
+    <result column="Ratio" jdbcType="DECIMAL" property="ratio" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    Peptide_id, Exp_id, Protein_id, Sequence, Prob, Ion_score, Repeat1, Repeat2, Repeat3, 
+    Ratio
+  </sql>
+  <select id="selectByExample" parameterType="dp.hgdb.auto.PeptideLevelExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from peptide_level
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from peptide_level
+    where Peptide_id = #{peptideId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from peptide_level
+    where Peptide_id = #{peptideId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="dp.hgdb.auto.PeptideLevelExample">
+    delete from peptide_level
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="dp.hgdb.auto.PeptideLevel">
+    insert into peptide_level (Peptide_id, Exp_id, Protein_id, 
+      Sequence, Prob, Ion_score, 
+      Repeat1, Repeat2, Repeat3, 
+      Ratio)
+    values (#{peptideId,jdbcType=INTEGER}, #{expId,jdbcType=INTEGER}, #{proteinId,jdbcType=INTEGER}, 
+      #{sequence,jdbcType=VARCHAR}, #{prob,jdbcType=VARCHAR}, #{ionScore,jdbcType=VARCHAR}, 
+      #{repeat1,jdbcType=DECIMAL}, #{repeat2,jdbcType=DECIMAL}, #{repeat3,jdbcType=DECIMAL}, 
+      #{ratio,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="dp.hgdb.auto.PeptideLevel">
+    insert into peptide_level
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="peptideId != null">
+        Peptide_id,
+      </if>
+      <if test="expId != null">
+        Exp_id,
+      </if>
+      <if test="proteinId != null">
+        Protein_id,
+      </if>
+      <if test="sequence != null">
+        Sequence,
+      </if>
+      <if test="prob != null">
+        Prob,
+      </if>
+      <if test="ionScore != null">
+        Ion_score,
+      </if>
+      <if test="repeat1 != null">
+        Repeat1,
+      </if>
+      <if test="repeat2 != null">
+        Repeat2,
+      </if>
+      <if test="repeat3 != null">
+        Repeat3,
+      </if>
+      <if test="ratio != null">
+        Ratio,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="peptideId != null">
+        #{peptideId,jdbcType=INTEGER},
+      </if>
+      <if test="expId != null">
+        #{expId,jdbcType=INTEGER},
+      </if>
+      <if test="proteinId != null">
+        #{proteinId,jdbcType=INTEGER},
+      </if>
+      <if test="sequence != null">
+        #{sequence,jdbcType=VARCHAR},
+      </if>
+      <if test="prob != null">
+        #{prob,jdbcType=VARCHAR},
+      </if>
+      <if test="ionScore != null">
+        #{ionScore,jdbcType=VARCHAR},
+      </if>
+      <if test="repeat1 != null">
+        #{repeat1,jdbcType=DECIMAL},
+      </if>
+      <if test="repeat2 != null">
+        #{repeat2,jdbcType=DECIMAL},
+      </if>
+      <if test="repeat3 != null">
+        #{repeat3,jdbcType=DECIMAL},
+      </if>
+      <if test="ratio != null">
+        #{ratio,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="dp.hgdb.auto.PeptideLevelExample" resultType="java.lang.Long">
+    select count(*) from peptide_level
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update peptide_level
+    <set>
+      <if test="record.peptideId != null">
+        Peptide_id = #{record.peptideId,jdbcType=INTEGER},
+      </if>
+      <if test="record.expId != null">
+        Exp_id = #{record.expId,jdbcType=INTEGER},
+      </if>
+      <if test="record.proteinId != null">
+        Protein_id = #{record.proteinId,jdbcType=INTEGER},
+      </if>
+      <if test="record.sequence != null">
+        Sequence = #{record.sequence,jdbcType=VARCHAR},
+      </if>
+      <if test="record.prob != null">
+        Prob = #{record.prob,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ionScore != null">
+        Ion_score = #{record.ionScore,jdbcType=VARCHAR},
+      </if>
+      <if test="record.repeat1 != null">
+        Repeat1 = #{record.repeat1,jdbcType=DECIMAL},
+      </if>
+      <if test="record.repeat2 != null">
+        Repeat2 = #{record.repeat2,jdbcType=DECIMAL},
+      </if>
+      <if test="record.repeat3 != null">
+        Repeat3 = #{record.repeat3,jdbcType=DECIMAL},
+      </if>
+      <if test="record.ratio != null">
+        Ratio = #{record.ratio,jdbcType=DECIMAL},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update peptide_level
+    set Peptide_id = #{record.peptideId,jdbcType=INTEGER},
+      Exp_id = #{record.expId,jdbcType=INTEGER},
+      Protein_id = #{record.proteinId,jdbcType=INTEGER},
+      Sequence = #{record.sequence,jdbcType=VARCHAR},
+      Prob = #{record.prob,jdbcType=VARCHAR},
+      Ion_score = #{record.ionScore,jdbcType=VARCHAR},
+      Repeat1 = #{record.repeat1,jdbcType=DECIMAL},
+      Repeat2 = #{record.repeat2,jdbcType=DECIMAL},
+      Repeat3 = #{record.repeat3,jdbcType=DECIMAL},
+      Ratio = #{record.ratio,jdbcType=DECIMAL}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="dp.hgdb.auto.PeptideLevel">
+    update peptide_level
+    <set>
+      <if test="expId != null">
+        Exp_id = #{expId,jdbcType=INTEGER},
+      </if>
+      <if test="proteinId != null">
+        Protein_id = #{proteinId,jdbcType=INTEGER},
+      </if>
+      <if test="sequence != null">
+        Sequence = #{sequence,jdbcType=VARCHAR},
+      </if>
+      <if test="prob != null">
+        Prob = #{prob,jdbcType=VARCHAR},
+      </if>
+      <if test="ionScore != null">
+        Ion_score = #{ionScore,jdbcType=VARCHAR},
+      </if>
+      <if test="repeat1 != null">
+        Repeat1 = #{repeat1,jdbcType=DECIMAL},
+      </if>
+      <if test="repeat2 != null">
+        Repeat2 = #{repeat2,jdbcType=DECIMAL},
+      </if>
+      <if test="repeat3 != null">
+        Repeat3 = #{repeat3,jdbcType=DECIMAL},
+      </if>
+      <if test="ratio != null">
+        Ratio = #{ratio,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where Peptide_id = #{peptideId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="dp.hgdb.auto.PeptideLevel">
+    update peptide_level
+    set Exp_id = #{expId,jdbcType=INTEGER},
+      Protein_id = #{proteinId,jdbcType=INTEGER},
+      Sequence = #{sequence,jdbcType=VARCHAR},
+      Prob = #{prob,jdbcType=VARCHAR},
+      Ion_score = #{ionScore,jdbcType=VARCHAR},
+      Repeat1 = #{repeat1,jdbcType=DECIMAL},
+      Repeat2 = #{repeat2,jdbcType=DECIMAL},
+      Repeat3 = #{repeat3,jdbcType=DECIMAL},
+      Ratio = #{ratio,jdbcType=DECIMAL}
+    where Peptide_id = #{peptideId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dp.hgdb.auto.ProteinAnnotationMapper">
+  <resultMap id="BaseResultMap" type="dp.hgdb.auto.ProteinAnnotation">
+    <id column="Accession" jdbcType="VARCHAR" property="accession" />
+    <result column="gene_symbol" jdbcType="VARCHAR" property="geneSymbol" />
+    <result column="Description" jdbcType="VARCHAR" property="description" />
+    <result column="Molecular_weight" jdbcType="INTEGER" property="molecularWeight" />
+    <result column="SV" jdbcType="VARCHAR" property="sv" />
+    <result column="PE" jdbcType="VARCHAR" property="pe" />
+    <result column="Function" jdbcType="VARCHAR" property="function" />
+    <result column="Length" jdbcType="INTEGER" property="length" />
+    <result column="Coverage" jdbcType="VARCHAR" property="coverage" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="dp.hgdb.auto.ProteinAnnotation">
+    <result column="Sequence" jdbcType="LONGVARCHAR" property="sequence" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    Accession, gene_symbol, Description, Molecular_weight, SV, PE, Function, Length, 
+    Coverage
+  </sql>
+  <sql id="Blob_Column_List">
+    Sequence
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="dp.hgdb.auto.ProteinAnnotationExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from protein_annotation
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="dp.hgdb.auto.ProteinAnnotationExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from protein_annotation
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from protein_annotation
+    where Accession = #{accession,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from protein_annotation
+    where Accession = #{accession,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="dp.hgdb.auto.ProteinAnnotationExample">
+    delete from protein_annotation
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="dp.hgdb.auto.ProteinAnnotation">
+    insert into protein_annotation (Accession, gene_symbol, Description, 
+      Molecular_weight, SV, PE, 
+      Function, Length, Coverage, 
+      Sequence)
+    values (#{accession,jdbcType=VARCHAR}, #{geneSymbol,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{molecularWeight,jdbcType=INTEGER}, #{sv,jdbcType=VARCHAR}, #{pe,jdbcType=VARCHAR}, 
+      #{function,jdbcType=VARCHAR}, #{length,jdbcType=INTEGER}, #{coverage,jdbcType=VARCHAR}, 
+      #{sequence,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="dp.hgdb.auto.ProteinAnnotation">
+    insert into protein_annotation
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="accession != null">
+        Accession,
+      </if>
+      <if test="geneSymbol != null">
+        gene_symbol,
+      </if>
+      <if test="description != null">
+        Description,
+      </if>
+      <if test="molecularWeight != null">
+        Molecular_weight,
+      </if>
+      <if test="sv != null">
+        SV,
+      </if>
+      <if test="pe != null">
+        PE,
+      </if>
+      <if test="function != null">
+        Function,
+      </if>
+      <if test="length != null">
+        Length,
+      </if>
+      <if test="coverage != null">
+        Coverage,
+      </if>
+      <if test="sequence != null">
+        Sequence,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="accession != null">
+        #{accession,jdbcType=VARCHAR},
+      </if>
+      <if test="geneSymbol != null">
+        #{geneSymbol,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="molecularWeight != null">
+        #{molecularWeight,jdbcType=INTEGER},
+      </if>
+      <if test="sv != null">
+        #{sv,jdbcType=VARCHAR},
+      </if>
+      <if test="pe != null">
+        #{pe,jdbcType=VARCHAR},
+      </if>
+      <if test="function != null">
+        #{function,jdbcType=VARCHAR},
+      </if>
+      <if test="length != null">
+        #{length,jdbcType=INTEGER},
+      </if>
+      <if test="coverage != null">
+        #{coverage,jdbcType=VARCHAR},
+      </if>
+      <if test="sequence != null">
+        #{sequence,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="dp.hgdb.auto.ProteinAnnotationExample" resultType="java.lang.Long">
+    select count(*) from protein_annotation
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update protein_annotation
+    <set>
+      <if test="record.accession != null">
+        Accession = #{record.accession,jdbcType=VARCHAR},
+      </if>
+      <if test="record.geneSymbol != null">
+        gene_symbol = #{record.geneSymbol,jdbcType=VARCHAR},
+      </if>
+      <if test="record.description != null">
+        Description = #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.molecularWeight != null">
+        Molecular_weight = #{record.molecularWeight,jdbcType=INTEGER},
+      </if>
+      <if test="record.sv != null">
+        SV = #{record.sv,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pe != null">
+        PE = #{record.pe,jdbcType=VARCHAR},
+      </if>
+      <if test="record.function != null">
+        Function = #{record.function,jdbcType=VARCHAR},
+      </if>
+      <if test="record.length != null">
+        Length = #{record.length,jdbcType=INTEGER},
+      </if>
+      <if test="record.coverage != null">
+        Coverage = #{record.coverage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sequence != null">
+        Sequence = #{record.sequence,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update protein_annotation
+    set Accession = #{record.accession,jdbcType=VARCHAR},
+      gene_symbol = #{record.geneSymbol,jdbcType=VARCHAR},
+      Description = #{record.description,jdbcType=VARCHAR},
+      Molecular_weight = #{record.molecularWeight,jdbcType=INTEGER},
+      SV = #{record.sv,jdbcType=VARCHAR},
+      PE = #{record.pe,jdbcType=VARCHAR},
+      Function = #{record.function,jdbcType=VARCHAR},
+      Length = #{record.length,jdbcType=INTEGER},
+      Coverage = #{record.coverage,jdbcType=VARCHAR},
+      Sequence = #{record.sequence,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update protein_annotation
+    set Accession = #{record.accession,jdbcType=VARCHAR},
+      gene_symbol = #{record.geneSymbol,jdbcType=VARCHAR},
+      Description = #{record.description,jdbcType=VARCHAR},
+      Molecular_weight = #{record.molecularWeight,jdbcType=INTEGER},
+      SV = #{record.sv,jdbcType=VARCHAR},
+      PE = #{record.pe,jdbcType=VARCHAR},
+      Function = #{record.function,jdbcType=VARCHAR},
+      Length = #{record.length,jdbcType=INTEGER},
+      Coverage = #{record.coverage,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="dp.hgdb.auto.ProteinAnnotation">
+    update protein_annotation
+    <set>
+      <if test="geneSymbol != null">
+        gene_symbol = #{geneSymbol,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        Description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="molecularWeight != null">
+        Molecular_weight = #{molecularWeight,jdbcType=INTEGER},
+      </if>
+      <if test="sv != null">
+        SV = #{sv,jdbcType=VARCHAR},
+      </if>
+      <if test="pe != null">
+        PE = #{pe,jdbcType=VARCHAR},
+      </if>
+      <if test="function != null">
+        Function = #{function,jdbcType=VARCHAR},
+      </if>
+      <if test="length != null">
+        Length = #{length,jdbcType=INTEGER},
+      </if>
+      <if test="coverage != null">
+        Coverage = #{coverage,jdbcType=VARCHAR},
+      </if>
+      <if test="sequence != null">
+        Sequence = #{sequence,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where Accession = #{accession,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="dp.hgdb.auto.ProteinAnnotation">
+    update protein_annotation
+    set gene_symbol = #{geneSymbol,jdbcType=VARCHAR},
+      Description = #{description,jdbcType=VARCHAR},
+      Molecular_weight = #{molecularWeight,jdbcType=INTEGER},
+      SV = #{sv,jdbcType=VARCHAR},
+      PE = #{pe,jdbcType=VARCHAR},
+      Function = #{function,jdbcType=VARCHAR},
+      Length = #{length,jdbcType=INTEGER},
+      Coverage = #{coverage,jdbcType=VARCHAR},
+      Sequence = #{sequence,jdbcType=LONGVARCHAR}
+    where Accession = #{accession,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="dp.hgdb.auto.ProteinAnnotation">
+    update protein_annotation
+    set gene_symbol = #{geneSymbol,jdbcType=VARCHAR},
+      Description = #{description,jdbcType=VARCHAR},
+      Molecular_weight = #{molecularWeight,jdbcType=INTEGER},
+      SV = #{sv,jdbcType=VARCHAR},
+      PE = #{pe,jdbcType=VARCHAR},
+      Function = #{function,jdbcType=VARCHAR},
+      Length = #{length,jdbcType=INTEGER},
+      Coverage = #{coverage,jdbcType=VARCHAR}
+    where Accession = #{accession,jdbcType=VARCHAR}
+  </update>
+</mapper>
