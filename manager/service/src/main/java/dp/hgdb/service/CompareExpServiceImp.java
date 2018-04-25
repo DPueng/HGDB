@@ -31,7 +31,6 @@ public class CompareExpServiceImp implements CompareExpService {
      */
     private List<ExpPojo> accessionOrder = new ArrayList<>();
 
-
     @Override
     public PagePojo sortByExpFC(List<Integer> indexList, Integer sortIndex, String sortType) {
         /**

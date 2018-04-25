@@ -7,6 +7,8 @@ import dp.hgdb.service.CompareExpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,14 +19,18 @@ public class CompareExpPageController {
 
     @Autowired
     private CompareExpService compareExpService;
+
+
     private List<Integer> indexList = new ArrayList<>();
 
-    @RequestMapping("/init")
-    public void initPage() throws Exception {
+    @RequestMapping(value = "/init", method = {RequestMethod.GET})
+    @ResponseBody
+    public PagePojo initPage(String strIndexList) throws Exception {
+        //切分组装indexList
+        String[] split = strIndexList.split(",");
         ArrayList<Integer> indexList = new ArrayList<>();
-        indexList.add(1);
-        indexList.add(3);
-        indexList.add(2);
+        for (String s : split)
+            indexList.add(Integer.parseInt(s));
         //这里需要对输入数组添加约束：
         //1,所有数字必须在1,2,3,4,5之中
         //2,所有数字不能重复
@@ -32,7 +38,9 @@ public class CompareExpPageController {
         PareRestrict.indexListRestrict(indexList);
         PagePojo pagePojo = compareExpService.initPage(indexList);
         this.indexList = indexList;
+        return pagePojo;
     }
+
 
     @RequestMapping("/sort")
     public void sortPage() throws Exception {
