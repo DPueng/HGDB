@@ -2,27 +2,26 @@ package dp.hgdb.pojo;
 
 import java.util.List;
 
-/**
- * 初始化頁面時（第一次加載頁面或者排序后返回结果）
- */
-
 public class PagePojo {
-    private List<AnnoPojo> annoPojo;
-    private List<List<ExpPojo>> list;
 
-    public List<AnnoPojo> getAnnoPojo() {
-        return annoPojo;
+
+    private List<ResultPojo> resultPojoList;
+    private RequestPojo requestPojo;
+
+    public List<ResultPojo> getResultPojoList() {
+        return resultPojoList;
     }
 
-    public void setAnnoPojo(List<AnnoPojo> annoPojo) {
-        this.annoPojo = annoPojo;
+    public void setResultPojoList(List<ResultPojo> resultPojoList) {
+        this.resultPojoList = resultPojoList;
     }
 
-    public List<List<ExpPojo>> getList() {
-        return list;
+    public RequestPojo getRequestPojo() {
+        return requestPojo;
     }
 
-    public void setList(List<List<ExpPojo>> list) {
-        this.list = list;
+    public void setRequestPojo(RequestPojo requestPojo) {
+        this.requestPojo = requestPojo;
     }
+
 }

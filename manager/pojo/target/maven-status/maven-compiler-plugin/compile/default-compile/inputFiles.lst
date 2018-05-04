@@ -1,10 +1,10 @@
-/home/dpeng/data/IdeaPro/HGDB/manager/pojo/src/main/java/dp/hgdb/auto/ProteinLevel.java
 /home/dpeng/data/IdeaPro/HGDB/manager/pojo/src/main/java/dp/hgdb/auto/PeptideLevel.java
 /home/dpeng/data/IdeaPro/HGDB/manager/pojo/src/main/java/dp/hgdb/auto/ProteinAnnotation.java
 /home/dpeng/data/IdeaPro/HGDB/manager/pojo/src/main/java/dp/hgdb/auto/ProteinLevelExample.java
 /home/dpeng/data/IdeaPro/HGDB/manager/pojo/src/main/java/dp/hgdb/auto/ProteinAnnotationExample.java
 /home/dpeng/data/IdeaPro/HGDB/manager/pojo/src/main/java/dp/hgdb/pojo/PagePojo.java
-/home/dpeng/data/IdeaPro/HGDB/manager/pojo/src/main/java/dp/hgdb/pojo/ExpPojo.java
 /home/dpeng/data/IdeaPro/HGDB/manager/pojo/src/main/java/dp/hgdb/auto/PeptideLevelExample.java
+/home/dpeng/data/IdeaPro/HGDB/manager/pojo/src/main/java/dp/hgdb/pojo/CompareParaTypePojo.java
+/home/dpeng/data/IdeaPro/HGDB/manager/pojo/src/main/java/dp/hgdb/pojo/RequestPojo.java
 /home/dpeng/data/IdeaPro/HGDB/manager/pojo/src/main/java/dp/hgdb/App.java
-/home/dpeng/data/IdeaPro/HGDB/manager/pojo/src/main/java/dp/hgdb/pojo/AnnoPojo.java
+/home/dpeng/data/IdeaPro/HGDB/manager/pojo/src/main/java/dp/hgdb/pojo/ResultPojo.java

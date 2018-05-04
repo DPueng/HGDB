@@ -1,4 +1,3 @@
-dp/hgdb/App.class
 dp/hgdb/service/CompareExpServiceImp.class
 dp/hgdb/service/CompareExpService.class
-dp/hgdb/utils/CompareExpUtils.class
+dp/hgdb/App.class

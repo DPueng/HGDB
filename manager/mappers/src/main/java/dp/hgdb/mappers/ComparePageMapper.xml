@@ -1,50 +1,136 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="dp.hgdb.mappers.ComparePageMapper">
-
-    <!--selectAnno()-->
-    <resultMap id="AnnoResultMap" type="dp.hgdb.pojo.AnnoPojo">
+    <resultMap id="ResultMap" type="dp.hgdb.pojo.ResultPojo">
         <result column="Accession" jdbcType="VARCHAR" property="accession"/>
         <result column="gene_symbol" jdbcType="VARCHAR" property="geneSymbol"/>
         <result column="Description" jdbcType="VARCHAR" property="description"/>
         <result column="Molecular_weight" jdbcType="INTEGER" property="molecularWeight"/>
+
+        <result column="FC1" jdbcType="DECIMAL" property="FC1"/>
+        <result column="Ratio1" jdbcType="DECIMAL" property="ratio1"/>
+        <result column="peptide_num1" jdbcType="DECIMAL" property="peptideNum1"/>
+
+
+        <result column="FC2" jdbcType="DECIMAL" property="FC2"/>
+        <result column="Ratio2" jdbcType="DECIMAL" property="ratio2"/>
+        <result column="peptide_num2" jdbcType="DECIMAL" property="peptideNum2"/>
+
+
+        <result column="FC3" jdbcType="DECIMAL" property="FC3"/>
+        <result column="Ratio3" jdbcType="DECIMAL" property="ratio3"/>
+        <result column="peptide_num3" jdbcType="DECIMAL" property="peptideNum3"/>
+
+
+        <result column="FC4" jdbcType="DECIMAL" property="FC4"/>
+        <result column="Ratio4" jdbcType="DECIMAL" property="ratio4"/>
+        <result column="peptide_num4" jdbcType="DECIMAL" property="peptideNum4"/>
+
+
+        <result column="FC5" jdbcType="DECIMAL" property="FC5"/>
+        <result column="Ratio5" jdbcType="DECIMAL" property="ratio5"/>
+        <result column="peptide_num5" jdbcType="DECIMAL" property="peptideNum5"/>
     </resultMap>
-    <select id="selectAnno" resultMap="AnnoResultMap">
-        SELECT
-            protein_annotation.Accession,
-            protein_annotation.gene_symbol,
-            protein_annotation.Description,
-            protein_annotation.Molecular_weight
+    <select id="selectByParaPojo" parameterType="dp.hgdb.pojo.RequestPojo" resultMap="ResultMap">
+        select *
+        from (select
+        protein_level.Accession AS Accession,
+        protein_annotation.gene_symbol AS gene_symbol,
+        protein_annotation.Description AS Description,
+        protein_annotation.Molecular_weight AS Molecular_weight,
+
+        1.000000 AS FC#{sampleId},
+        cast(MAX(IF(protein_level.Exp_id = #{sampleId}, protein_level.Ratio, 0)) as decimal(8,6)) AS Ratio#{sampleId},
+        PN_table.peptide_num#{sampleId},
+        <foreach collection="indexList" item="index" separator=",">
+            cast(MAX(IF(protein_level.Exp_id = #{index}, protein_level.Ratio, 0)) / MAX(IF(protein_level.Exp_id =
+            #{sampleId}, protein_level.Ratio, 0)) as decimal(8,6)) AS FC#{index},
+            cast(MAX(IF(protein_level.Exp_id = #{index}, protein_level.Ratio, 0)) as decimal(8,6)) AS Ratio#{index},
+            PN_table.peptide_num#{index}
+        </foreach>
+
+        FROM (SELECT join_table.Accession,
+        MAX(IF(join_table.Exp_id = #{sampleId},peptide_num,0)) peptide_num#{sampleId},
+        <foreach collection="indexList" item="index" separator=",">
+            MAX(IF(join_table.Exp_id = #{index},peptide_num,0)) peptide_num#{index}
+        </foreach>
+        FROM (SELECT
+        protein_level.Exp_id,
+        protein_level.Accession,
+        COUNT(*) AS peptide_num
         FROM
-            protein_annotation
+        protein_level
+        left join peptide_level on protein_level.Protein_id = peptide_level.Protein_id
+        GROUP BY protein_level.Protein_id) as join_table
+        GROUP BY join_table.Accession) as PN_table,
+        protein_annotation,
+        protein_level
+        WHERE protein_annotation.Accession = protein_level.Accession
+        AND PN_table.Accession = protein_level.Accession
+        GROUP BY protein_level.Accession) as result
+        <where>
+            <if test="#{topFoldChange} != #{downFoldChange}">
+                <foreach collection="indexList" item="index" separator=" OR ">
+                    FC#{index} &gt;= #{topFoldChange} OR FC#{index} &lt;= #{downFoldChange}
+                </foreach>
+            </if>
+        </where>
+        <choose>
+            <when test="sortIndex != 0">
+                ORDER BY FC#{sortIndex}
+                <choose>
+                    <when test='sortType = "ASC"'>ASC</when>
+                    <when test='sortType = "DESC"'>DESC</when>
+                </choose>
+            </when>
+        </choose>
+        limit #{pageBegin}, #{pageLength}
     </select>
+    <select id="selectEntryCount" parameterType="dp.hgdb.pojo.RequestPojo" resultType="java.lang.Integer">
+        select count(*)
+        from (        select *
+        from (select
+        protein_level.Accession AS Accession,
+        protein_annotation.gene_symbol AS gene_symbol,
+        protein_annotation.Description AS Description,
+        protein_annotation.Molecular_weight AS Molecular_weight,
 
-    <!--selectByExpID()-->
-    <resultMap id="ExpResultMap" type="dp.hgdb.pojo.ExpPojo">
-        <result column="Accession" jdbcType="VARCHAR" property="accession"/>
-        <result column="Ratio" jdbcType="DECIMAL" property="ratio"/>
-        <result column="peptideNum" jdbcType="INTEGER" property="peptideNum"/>
-    </resultMap>
-    <select id="selectByExpID" parameterType="java.lang.Integer"  resultMap="ExpResultMap">
-        SELECT
-            protein_level.Accession,
-            protein_level.Ratio,
-            COUNT(peptide_level.Peptide_id) AS peptideNum
+        1.000000 AS FC#{sampleId},
+        cast(MAX(IF(protein_level.Exp_id = #{sampleId}, protein_level.Ratio, 0)) as decimal(8,6)) AS Ratio#{sampleId},
+        PN_table.peptide_num#{sampleId},
+        <foreach collection="indexList" item="index" separator=",">
+            cast(MAX(IF(protein_level.Exp_id = #{index}, protein_level.Ratio, 0)) / MAX(IF(protein_level.Exp_id =
+            #{sampleId}, protein_level.Ratio, 0)) as decimal(8,6)) AS FC#{index},
+            cast(MAX(IF(protein_level.Exp_id = #{index}, protein_level.Ratio, 0)) as decimal(8,6)) AS Ratio#{index},
+            PN_table.peptide_num#{index}
+        </foreach>
+
+        FROM (SELECT join_table.Accession,
+        MAX(IF(join_table.Exp_id = #{sampleId},peptide_num,0)) peptide_num#{sampleId},
+        <foreach collection="indexList" item="index" separator=",">
+            MAX(IF(join_table.Exp_id = #{index},peptide_num,0)) peptide_num#{index}
+        </foreach>
+        FROM (SELECT
+        protein_level.Exp_id,
+        protein_level.Accession,
+        COUNT(*) AS peptide_num
         FROM
-            peptide_level,
-            protein_level
-        WHERE
-            peptide_level.Exp_id = #{ExpId,jdbcType=INTEGER}
-            AND protein_level.Protein_id = peptide_level.Protein_id
-        GROUP BY peptide_level.Protein_id
+        protein_level
+        left join peptide_level on protein_level.Protein_id = peptide_level.Protein_id
+        GROUP BY protein_level.Protein_id) as join_table
+        GROUP BY join_table.Accession) as PN_table,
+        protein_annotation,
+        protein_level
+        WHERE protein_annotation.Accession = protein_level.Accession
+        AND PN_table.Accession = protein_level.Accession
+        GROUP BY protein_level.Accession) as result
+        <where>
+            <if test="#{topFoldChange} != #{downFoldChange}">
+                <foreach collection="indexList" item="index" separator=" OR ">
+                    FC#{index} &gt;= #{topFoldChange} OR FC#{index} &lt;= #{downFoldChange}
+                </foreach>
+            </if>
+        </where>) as rr
+
     </select>
-
-
-
-
-
-
-
-
-
 </mapper>

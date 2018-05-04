@@ -1,16 +1,11 @@
 package dp.hgdb.mappers;
 
-import dp.hgdb.pojo.AnnoPojo;
-import dp.hgdb.pojo.ExpPojo;
+import dp.hgdb.pojo.*;
 
 import java.util.List;
 
 public interface ComparePageMapper {
-    public List<AnnoPojo> selectAnno();
+    public List<ResultPojo> selectByParaPojo(RequestPojo requestPojo);
 
-    /**
-     * @param ExpId = 1,2,3,4,5
-     * @return
-     */
-    public List<ExpPojo> selectByExpID(Integer ExpId);
+    public Integer selectEntryCount(RequestPojo requestPojo);
 }
